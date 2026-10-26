@@ -1,7 +1,7 @@
 /*
 Plugin of Miranda IM for communicating with users of the MSN Messenger protocol.
 
-Copyright (c) 2012-2020 Miranda NG team
+Copyright (c) 2012-2014 Miranda NG Team
 Copyright (c) 2006-2012 Boris Krasnovskiy.
 Copyright (c) 2003-2005 George Hazan.
 Copyright (c) 2002-2003 Richard Hughes (original version).
@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stdafx.h"
+#include "msn_global.h"
 #include "msn_proto.h"
 
 int CMsnProto::MSN_HandleErrors(ThreadData* info, char* cmdString)
@@ -28,50 +28,18 @@ int CMsnProto::MSN_HandleErrors(ThreadData* info, char* cmdString)
 	int errorCode, packetID = -1;
 	sscanf(cmdString, "%d %d", &errorCode, &packetID);
 
-	char* params = "";
-	int trid = -1;
-
-	if (cmdString[3]) {
-		if (isdigit((BYTE)cmdString[4])) {
-			trid = strtol(cmdString + 4, &params, 10);
-			switch (*params) {
-			case ' ':	case '\0':	case '\t':	case '\n':
-				while (*params == ' ' || *params == '\t')
-					params++;
-				break;
-
-			default:
-				params = cmdString + 4;
-			}
-		}
-		else params = cmdString + 4;
-	}
-
-	union {
-		char* tWords[2];
-		struct { char *typeId, *strMsgBytes; } data;
-	};
-
-	if (sttDivideWords(params, _countof(tWords), tWords) < 2) {
-		debugLogA("Invalid %.3s command, ignoring", cmdString);
-		return 0;
-	}
-
-	HReadBuffer buf(info, 0);
-	buf.surelyRead(atol(data.strMsgBytes));
 	debugLogA("Server error:%s", cmdString);
 
-	switch (errorCode) {
+	switch(errorCode) {
 	case ERR_INTERNAL_SERVER:
 		MSN_ShowError("MSN Services are temporarily unavailable, please try to connect later");
-		ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, nullptr, LOGINERR_NOSERVER);
+		ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, NULL, LOGINERR_NOSERVER);
 		return 1;
 
 	case ERR_SERVER_BUSY:
 	case ERR_SERVER_UNAVAILABLE:
-	case ERR_TIMEDOUT:
 		MSN_ShowError("MSN Services are too busy, please try to connect later");
-		ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, nullptr, LOGINERR_NOSERVER);
+		ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, NULL, LOGINERR_NOSERVER);
 		return 1;
 
 	case ERR_NOT_ALLOWED_WHEN_OFFLINE:
@@ -86,17 +54,17 @@ int CMsnProto::MSN_HandleErrors(ThreadData* info, char* cmdString)
 		MSN_ShowError("User is already in your contact list");
 		return 0;
 
-	case ERR_DETAILED_ERR_IN_PAYLOAD:
+	case ERR_CONTACT_LIST_FAILED:
 	case ERR_LIST_UNAVAILABLE:
-	case ERR_INVALID_USER:
-		char* tErrWords[4];
-		if (sttDivideWords(cmdString, _countof(tErrWords), tErrWords) == _countof(tErrWords))
-			HReadBuffer(info, 0).surelyRead(atol(tErrWords[3]));
-		return 0;
+			char* tWords[3];
+			if (sttDivideWords(cmdString, 3, tWords) == 3)
+				HReadBuffer(info, 0).surelyRead(atol(tWords[2]));
+			return 0;
 
 	case ERR_NOT_ONLINE:
 		if (info->mInitialContactWLID)
-			ProtoBroadcastAck(MSN_HContactFromEmail(info->mInitialContactWLID), ACKTYPE_MESSAGE, ACKRESULT_FAILED, (HANDLE)999999, (LPARAM)TranslateT("User not online"));
+			ProtoBroadcastAck(MSN_HContactFromEmail(info->mInitialContactWLID), ACKTYPE_MESSAGE, ACKRESULT_FAILED,
+				(HANDLE)999999, (LPARAM)Translate("User not online"));
 		else
 			MSN_ShowError("User not online");
 
@@ -107,12 +75,11 @@ int CMsnProto::MSN_HandleErrors(ThreadData* info, char* cmdString)
 		return 0;
 
 	case ERR_AUTHENTICATION_FAILED:
-		MSN_ShowError("Your username or password is incorrect");
-		ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, nullptr, LOGINERR_WRONGPASSWORD);
-		return 1;
-
-	case 999:
-		MSN_ShowError("Unknown error (999) occured, logging off");
+		if (info->mType != SERVER_SWITCHBOARD)
+		{
+			MSN_ShowError("Your username or password is incorrect");
+			ProtoBroadcastAck(NULL, ACKTYPE_LOGIN, ACKRESULT_FAILED, NULL, LOGINERR_WRONGPASSWORD);
+		}
 		return 1;
 
 	default:

@@ -1,7 +1,7 @@
 /*
 Plugin of Miranda IM for communicating with users of the MSN Messenger protocol.
 
-Copyright (c) 2012-2020 Miranda NG team
+Copyright (c) 2012-2014 Miranda NG Team
 Copyright (c) 2006-2012 Boris Krasnovskiy.
 Copyright (c) 2003-2005 George Hazan.
 Copyright (c) 2002-2003 Richard Hughes (original version).
@@ -20,17 +20,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stdafx.h"
+#include "msn_global.h"
 #include "msn_proto.h"
+
 
 //=======================================================================================
 
 int ThreadData::send(const char data[], size_t datalen)
 {
+	NETLIBBUFFER nlb = { (char*)data, (int)datalen, 0 };
+
 	resetTimeout();
 
-	int rlen = Netlib_Send(s, data, (int)datalen);
-	if (rlen == SOCKET_ERROR) {
+	if (proto->usingGateway && !(mType == SERVER_FILETRANS || mType == SERVER_P2P_DIRECT))
+	{
+		mGatewayTimeout = 2;
+		CallService(MS_NETLIB_SETPOLLINGTIMEOUT, WPARAM(s), mGatewayTimeout);
+	}
+
+	int rlen = CallService(MS_NETLIB_SEND, (WPARAM)s, (LPARAM)&nlb);
+	if (rlen == SOCKET_ERROR)
+	{
 		// should really also check if sendlen is the same as datalen
 		proto->debugLogA("Send failed: %d", WSAGetLastError());
 		return FALSE;
@@ -47,55 +57,123 @@ void ThreadData::resetTimeout(bool term)
 
 bool ThreadData::isTimeout(void)
 {
-	if (mWaitPeriod >= clock())
-		return false;
-
 	bool res = false;
-	if (mIsMainThread)
-		res = true;
-	else if (mJoinedContactsWLID.getCount() <= 1 || mChatID[0] == 0)
-		res = true;
 
-	if (res) {
-		proto->debugLogA("Dropping the idle p2p due to inactivity");
-		if (termPending)
-			return true;
+	if (mWaitPeriod >= clock()) return false;
+
+	if (mIsMainThread)
+	{
+		res = !proto->usingGateway;
 	}
-	else resetTimeout();
+	else if (mJoinedContactsWLID.getCount() <= 1 || mChatID[0] == 0)
+	{
+		MCONTACT hContact = getContactHandle();
+
+		if (mJoinedContactsWLID.getCount() == 0 || termPending)
+			res = true;
+		else if (proto->p2p_getThreadSession(hContact, mType) != NULL)
+			res = false;
+		else if (mType == SERVER_SWITCHBOARD)
+		{
+			res = MSN_MsgWndExist(hContact);
+			if (res)
+			{
+				WORD status = proto->getWord(hContact, "Status", ID_STATUS_OFFLINE);
+				if ((status == ID_STATUS_OFFLINE || status == ID_STATUS_INVISIBLE || proto->m_iStatus == ID_STATUS_INVISIBLE))
+					res = false;
+			}
+		}
+		else
+			res = true;
+	}
+
+	if (res)
+	{
+		bool sbsess = mType == SERVER_SWITCHBOARD;
+
+		proto->debugLogA("Dropping the idle %s due to inactivity", sbsess ? "switchboard" : "p2p");
+		if (!sbsess || termPending) return true;
+
+		if (proto->getByte("EnableSessionPopup", 0))
+		{
+			MCONTACT hContact = NULL;
+			if (mJoinedContactsWLID.getCount())
+				hContact = proto->MSN_HContactFromEmail(mJoinedContactsWLID[0]);
+			else if (mInitialContactWLID)
+				hContact = proto->MSN_HContactFromEmail(mInitialContactWLID);
+
+			if (hContact)
+				proto->MSN_ShowPopup(hContact, TranslateT("Chat session dropped due to inactivity"), 0);
+		}
+
+		sendTerminate();
+		resetTimeout(true);
+	}
+	else
+		resetTimeout();
 
 	return false;
 }
 
 int ThreadData::recv(char* data, size_t datalen)
 {
-	resetTimeout();
+	NETLIBBUFFER nlb = { data, (int)datalen, 0 };
 
-	NETLIBSELECT nls = {};
-	nls.dwTimeout = 1000;
-	nls.hReadConns[0] = s;
+	if (!proto->usingGateway)
+	{
+		resetTimeout();
+		NETLIBSELECT nls = { 0 };
+		nls.cbSize = sizeof(nls);
+		nls.dwTimeout = 1000;
+		nls.hReadConns[0] = s;
 
-	for (;;) {
-		int ret = Netlib_Select(&nls);
-		if (ret < 0) {
-			proto->debugLogA("Connection abortively closed, error %d", WSAGetLastError());
-			return ret;
+		for (;;)
+		{
+			int ret = CallService(MS_NETLIB_SELECT, 0, (LPARAM)&nls);
+			if (ret < 0)
+			{
+				proto->debugLogA("Connection abortively closed, error %d", WSAGetLastError());
+				return ret;
+			}
+			else if (ret == 0)
+			{
+				if (isTimeout()) return 0;
+			}
+			else
+				break;
 		}
-		else if (ret == 0) {
-			if (isTimeout()) return 0;
-		}
-		else
-			break;
 	}
 
-	int ret = Netlib_Recv(s, data, (int)datalen);
-	if (ret == 0) {
+LBL_RecvAgain:
+	int ret = CallService(MS_NETLIB_RECV, (WPARAM)s, (LPARAM)&nlb);
+	if (ret == 0)
+	{
 		proto->debugLogA("Connection closed gracefully");
 		return 0;
 	}
 
-	if (ret < 0) {
+	if (ret < 0)
+	{
 		proto->debugLogA("Connection abortively closed, error %d", WSAGetLastError());
 		return ret;
+	}
+
+	if (proto->usingGateway)
+	{
+		if (ret == 1 && *data == 0)
+		{
+			if (sessionClosed || isTimeout()) return 0;
+			if ((mGatewayTimeout += 2) > 20) mGatewayTimeout = 20;
+
+			CallService(MS_NETLIB_SETPOLLINGTIMEOUT, WPARAM(s), mGatewayTimeout);
+			goto LBL_RecvAgain;
+		}
+		else
+		{
+			resetTimeout();
+			mGatewayTimeout = 1;
+			CallService(MS_NETLIB_SETPOLLINGTIMEOUT, WPARAM(s), mGatewayTimeout);
+		}
 	}
 
 	return ret;

@@ -1,7 +1,7 @@
 /*
 Plugin of Miranda IM for communicating with users of the MSN Messenger protocol.
 
-Copyright (c) 2012-2020 Miranda NG team
+Copyright (c) 2012-2014 Miranda NG Team
 Copyright (c) 2006-2011 Boris Krasnovskiy.
 Copyright (c) 2003-2005 George Hazan.
 Copyright (c) 2002-2003 Richard Hughes (original version).
@@ -20,8 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-
 #include <windows.h>
 #include <commctrl.h>
 
@@ -38,17 +36,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <newpluginapi.h>
 
+#include <m_clist.h>
 #include <m_clistint.h>
+#include <m_clui.h>
 #include <m_contacts.h>
 #include <m_idle.h>
 #include <m_icolib.h>
 #include <m_message.h>
 #include <m_options.h>
 #include <m_protocols.h>
+#include <m_protomod.h>
 #include <m_protosvc.h>
 #include <m_protoint.h>
 #include <m_skin.h>
 #include <m_system.h>
+#include <m_system_cpp.h>
 #include <m_userinfo.h>
 #include <m_utils.h>
 #include <win2k.h>
@@ -56,22 +58,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <m_langpack.h>
 #include <m_netlib.h>
 #include <m_popup.h>
-#include <m_chat_int.h>
+#include <m_chat.h>
 #include <m_avatars.h>
 #include <m_timezones.h>
 #include <m_extraicons.h>
 #include <m_nudge.h>
-#include <m_json.h>
+#include <m_string.h>
 
 #include "m_proto_listeningto.h"
 #include "m_folders.h"
 #include "m_metacontacts.h"
 
 #include "ezxml.h"
-
-#include <openssl/hmac.h>
-#include <openssl/sha.h>
-#pragma comment(lib, "libeay32.lib")
 
 #include "resource.h"
 
@@ -80,8 +78,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define ERR_SYNTAX_ERROR                 200
 #define ERR_INVALID_PARAMETER            201
-#define ERR_INVALID_FEDERATED_USER		 203
-#define ERR_UNROUTABLE_USER				 204
 #define ERR_INVALID_USER                 205
 #define ERR_FQDN_MISSING                 206
 #define ERR_ALREADY_LOGIN                207
@@ -93,56 +89,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ERR_NOT_ONLINE                   217
 #define ERR_ALREADY_IN_THE_MODE          218
 #define ERR_ALREADY_IN_OPPOSITE_LIST     219
-#define ERR_NOT_ACCEPTING_PAGES			 220
-#define ERR_INVALID_MSISDN				 232
-#define ERR_UNKNOWN_MSISDN				 233
-#define ERR_UNKNOWN_KEITAI_DOMAIN		 234
-#define ERR_INVALID_XML_DATA			 240
-#define ERR_DETAILED_ERR_IN_PAYLOAD      241
+#define ERR_CONTACT_LIST_FAILED          241
 #define ERR_SWITCHBOARD_FAILED           280
 #define ERR_NOTIFY_XFR_FAILED            281
-#define ERR_UNKNOWN_P2P_APP				 282
-#define ERR_UNKNOWN_UUN_APP				 283
-#define ERR_MESSAGE_TOO_LONG			 285
-#define ERR_SMS_JUST_OUT_OF_FUNDS		 290
 #define ERR_REQUIRED_FIELDS_MISSING      300
 #define ERR_NOT_LOGGED_IN                302
-#define ERR_ADDRESS_BOOK	 			 403
-#define ERR_SMS_SUBSCRIPTION_REQUIRED	 413
-#define ERR_SMS_SUBSCRIPTION_DISABLED	 414
-#define ERR_SMS_OUT_OF_FUNDS			 415
-#define ERR_SMS_DISABLED_MARKET			 416
-#define ERR_SMS_DISABLED_GLOBAL			 417
-#define ERR_TRY_AGAIN_LATER				 418
-#define ERR_NO_MARKET_SPECIFIED			 419
 #define ERR_INTERNAL_SERVER              500
 #define ERR_DB_SERVER                    501
-#define ERR_UPSDOWN                      504
 #define ERR_LIST_UNAVAILABLE             508
-#define ERR_PAGE_MODE_MESSAGE			 509
 #define ERR_FILE_OPERATION               510
-#define ERR_DETAILED_ERR				 511
 #define ERR_MEMORY_ALLOC                 520
-#define ERR_OIM_NOT_SUPPORTED			 537
-#define ERR_SMS_ACCOUNT_MUTED			 550
-#define ERR_SMS_ACCOUNT_DISABLED		 551
-#define ERR_SMS_ACCOUNT_MAXED			 552
-#define ERR_SMS_INTERNAL_SERVER			 580
-#define ERR_SMS_CARRIER_INVALID			 590
-#define ERR_SMS_CARRIER_NO_ROUTE		 591
-#define ERR_SMS_CARRIER_ERRORED			 592
-#define ERR_SMS_ADDRESS_MAPPING_FULL	 593
-#define ERR_SMS_INCORRECT_SOURCE_CTRY	 594
-#define ERR_SMS_MOBILE_CACHE_FULL		 595
-#define ERR_SMS_INCORRECT_FORMAT		 596
-#define ERR_SMS_INVALID_TEXT			 597
-#define ERR_SMS_MESSAGE_TOO_LONG		 598
 #define ERR_SERVER_BUSY                  600
 #define ERR_SERVER_UNAVAILABLE           601
 #define ERR_PEER_NS_DOWN                 602
 #define ERR_DB_CONNECT                   603
 #define ERR_SERVER_GOING_DOWN            604
-#define ERR_PAGING_UNAVAILABLE			 606
 #define ERR_CREATE_CONNECTION            707
 #define ERR_INVALID_LOCALE               710
 #define ERR_BLOCKING_WRITE               711
@@ -151,26 +112,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ERR_TOO_MANY_SESSIONS            714
 #define ERR_NOT_EXPECTED                 715
 #define ERR_BAD_FRIEND_FILE              717
-#define ERR_USER_RESTRICTED				 718
-#define ERR_SESSION_FEDERATED			 719
-#define ERR_USER_FEDERATED				 726
-#define ERR_ROAMING_LOGOFF				 733
-#define ERR_TOO_MANY_ENDPOINTS			 734
-#define ERR_RATE_LIMIT_EXCEEDED			 800
-#define ERR_PER_USER_LOGIN_LIMIT_EXCEED	 803
 #define ERR_AUTHENTICATION_FAILED        911
 #define ERR_NOT_ALLOWED_WHEN_OFFLINE     913
-#define ERR_ACCOUNT_COMPROMISED			 915
 #define ERR_NOT_ACCEPTING_NEW_USERS      920
-#define ERR_TIMEDOUT					 921
-#define ERR_CHILD_WITHOUT_FULL_CONSENT	 923
 #define ERR_EMAIL_ADDRESS_NOT_VERIFIED   924
-#define ERR_MGED_USER_LTD_ACC_WRONG_CLNT 926
-#define ERR_MGED_USER_ACCESS_DENIED		 927
-#define ERR_AUTH						 928
-#define ERR_DOMAIN_RESERVED				 931
-#define ERR_INVALID_CONTACT_LIST		 933
-#define ERR_INVALID_SIGNATURE			 935
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	Global definitions
@@ -179,63 +124,72 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MSN_GUID_LEN              40
 
 #define MSN_PACKETS_COMBINE         7
-#define MSN_DEFAULT_PORT          443
-#define MSN_DEFAULT_GATEWAY_PORT  443
-const char MSN_DEFAULT_LOGIN_SERVER[] = "s.gateway.messenger.live.com";
-const char MSN_DEFAULT_GATEWAY[] =      "geo.gateway.messenger.live.com";
-const char MSN_USER_AGENT[] =           NETLIB_USER_AGENT;
+#define MSN_DEFAULT_PORT         1863
+#define MSN_DEFAULT_GATEWAY_PORT   80
+const char MSN_DEFAULT_LOGIN_SERVER[] = "messenger.hotmail.com";
+const char MSN_DEFAULT_GATEWAY[] =      "gateway.messenger.hotmail.com";
+const char MSN_USER_AGENT[] =           "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1)";
 
-#define  MSN_BLOCK        "/BlockCommand"
-#define  MSN_INVITE       "/InviteCommand"
-#define  MSN_VIEW_PROFILE "/ViewProfile"
+#define MSN_BLOCK        "/BlockCommand"
+#define MSN_INVITE       "/InviteCommand"
+#define MSN_NETMEETING   "/NetMeeting"
+#define MSN_VIEW_PROFILE "/ViewProfile"
 
-#define  MS_GOTO_INBOX		"/GotoInbox"
-#define  MS_EDIT_PROFILE		"/EditProfile"
-#define  MS_EDIT_ALERTS		"/EditAlerts"
-#define  MS_SET_NICKNAME_UI  "/SetNicknameUI"
+#define MS_GOTO_INBOX		"/GotoInbox"
+#define MS_EDIT_PROFILE		"/EditProfile"
+#define MS_EDIT_ALERTS		"/EditAlerts"
+#define MS_SET_NICKNAME_UI  "/SetNicknameUI"
+
+extern const char sttVoidUid[];
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	MSN plugin functions
 
 struct CMsnProto;
 
-#define  MSN_ALLOW_MSGBOX    1
-#define  MSN_ALLOW_ENTER	    2
-#define  MSN_HOTMAIL_POPUP   4
-#define  MSN_SHOW_ERROR      8
-#define  MSN_ALERT_POPUP	    16
+#define	MSN_ALLOW_MSGBOX    1
+#define	MSN_ALLOW_ENTER	    2
+#define	MSN_HOTMAIL_POPUP   4
+#define MSN_SHOW_ERROR      8
+#define	MSN_ALERT_POPUP	    16
 
-void     HtmlDecode(char* str);
-char*    HtmlEncode(const char* str);
-bool     txtParseParam (const char* szData, const char* presearch, const char* start, const char* finish, char* param, const int size);
-void     stripBBCode(char* src);
-void     stripColorCode(char* src);
-void     stripHTML(char* str);
-void     parseWLID(char* wlid, char** net, char** email, char** inst);
+void        HtmlDecode(char* str);
+char*       HtmlEncode(const char* str);
+bool		txtParseParam (const char* szData, const char* presearch, const char* start, const char* finish, char* param, const int size);
+void		stripBBCode(char* src);
+void		stripColorCode(char* src);
+void		parseWLID(char* wlid, char** net, char** email, char** inst);
 
-char*    GetGlobalIp(void);
+char*		GetGlobalIp(void);
 
-char*    MSN_GetAvatarHash(char* szContext, char** pszUrl = nullptr);
-bool     MSN_MsgWndExist(MCONTACT hContact);
+template <class chartype> void UrlDecode(chartype* str);
 
-#define  MSN_SendNickname(a) MSN_SendNicknameUtf(UTF8(a))
+void		__cdecl MSN_ConnectionProc(HANDLE hNewConnection, DWORD dwRemoteIP, void*);
 
-unsigned MSN_GenRandom(void);
+char*		MSN_GetAvatarHash(char* szContext, char** pszUrl = NULL);
+bool		MSN_MsgWndExist(MCONTACT hContact);
 
-void     MSN_InitContactMenu(void);
-void     MSN_RemoveContactMenus(void);
+#define		MSN_SendNickname(a) MSN_SendNicknameUtf(UTF8(a))
 
-void     MsnInitIcons(void);
+unsigned    MSN_GenRandom(void);
 
-int      sttDivideWords(char* parBuffer, int parMinItems, char** parDest);
+void        MSN_InitContactMenu(void);
+void        MSN_RemoveContactMenus(void);
+
+HANDLE      GetIconHandle(int iconId);
+HICON       LoadIconEx(const char* name, bool big = false);
+void        ReleaseIconEx(const char* name, bool big = false);
+
+void        MsnInitIcons(void);
+
+int         sttDivideWords(char* parBuffer, int parMinItems, char** parDest);
 void		MSN_MakeDigest(const char* chl, char* dgst);
 char*		getNewUuid(void);
-time_t	IsoToUnixTime(const char *stamp);
-time_t	MsnTSToUnixtime(const char *pszTS);
 
-wchar_t* EscapeChatTags(const wchar_t* pszText);
+TCHAR* EscapeChatTags(const TCHAR* pszText);
+TCHAR* UnEscapeChatTags(TCHAR* str_in);
 
-void     overrideStr(wchar_t*& dest, const wchar_t* src, bool unicode, const wchar_t* def = nullptr);
+void   overrideStr(TCHAR*& dest, const TCHAR* src, bool unicode, const TCHAR* def = NULL);
 
 char* arrayToHex(BYTE* data, size_t datasz);
 
@@ -257,14 +211,14 @@ inline unsigned __int64 _htonl64(unsigned __int64 s)
 /////////////////////////////////////////////////////////////////////////////////////////
 // Popup interface
 
-struct PopupData
+typedef struct _tag_PopupData
 {
 	unsigned flags;
 	char* url;
-	wchar_t* title;
-	wchar_t* text;
+	TCHAR* title;
+	TCHAR* text;
 	CMsnProto* proto;
-};
+} PopupData;
 
 struct STRLIST : public LIST<char>
 {
@@ -320,7 +274,7 @@ public:
 	void        addString(const char* name, const char* szValue, unsigned flags = 0);
 	void        addLong(const char* name, long lValue, unsigned flags = 0);
 	void        addULong(const char* name, unsigned lValue);
-	void        addBool(const char* name, bool lValue);
+	void	    addBool(const char* name, bool lValue);
 
 	const char* operator[](const char* fieldName) { return find(fieldName); }
 
@@ -354,16 +308,19 @@ struct HReadBuffer
 	BYTE* surelyRead(size_t parBytes);
 
 	ThreadData* owner;
-	BYTE* buffer;
-	size_t totalDataSize;
-	size_t startOffset;
+	BYTE*			buffer;
+	size_t			totalDataSize;
+	size_t			startOffset;
 };
 
 enum TInfoType
 {
 	SERVER_NOTIFICATION,
-	SERVER_HTTP
+	SERVER_SWITCHBOARD,
+	SERVER_FILETRANS,
+	SERVER_P2P_DIRECT
 };
+
 
 struct filetransfer
 {
@@ -373,7 +330,7 @@ struct filetransfer
 	void close(void);
 	void complete(void);
 	int  create(void);
-	int  openNext(void);
+	int openNext(void);
 
 	CMsnProto* proto;
 
@@ -381,19 +338,132 @@ struct filetransfer
 
 	bool        bCanceled;		// flag to interrupt a transfer
 	bool        bCompleted;		// was a FT ever completed?
+	bool        bAccepted;		// was a FT ever completed?
 
 	int			fileId;			// handle of file being transferring (r/w)
 
 	HANDLE		hLockHandle;
-	HANDLE		hResumeEvt;
 
 	ThreadData  *info;
 	TInfoType	tType;
-	unsigned    cf;
+	TInfoType	tTypeReq;
+	time_t		ts;
+	clock_t     nNotify;
+	unsigned	cf;
+
+	bool        p2p_waitack;    // wait for ack
+	bool        p2p_isV2;       // P2P V2
+
+	unsigned    p2p_sessionid;	// session id
+	unsigned    p2p_acksessid;	// acknowledged session id
+	unsigned    p2p_sendmsgid;  // send message id
+	unsigned    p2p_byemsgid;   // bye message id
+	unsigned    p2p_ackID;		// number of ack's state
+	unsigned    p2p_appID;		// application id: 1 = avatar, 2 = file transfer
+	unsigned    p2p_type;		// application id: 1 = avatar, 2 = file transfer, 3 = custom emoticon
+	char*       p2p_branch;		// header Branch: field
+	char*       p2p_callID;		// header Call-ID: field
+	char*       p2p_dest;		// destination e-mail address
+	char*       p2p_object;     // MSN object for a transfer
 
 	//---- receiving a file
 	char*       szInvcookie;	// cookie for receiving
+
+	unsigned __int64 lstFilePtr;
 };
+
+struct directconnection
+{
+	directconnection(const char* CallID, const char* Wlid);
+	~directconnection();
+
+	char* calcHashedNonce(UUID* nonce);
+	char* mNonceToText(void);
+	char* mNonceToHash(void) { return calcHashedNonce(mNonce); }
+	void  xNonceToBin(UUID* nonce);
+
+	UUID* mNonce;
+	char* xNonce;
+
+	char* callId;
+	char* wlid;
+
+	time_t ts;
+
+	bool useHashedNonce;
+	bool bAccepted;
+
+	CMsnProto* proto;
+};
+
+
+#pragma pack(1)
+
+typedef struct _tag_HFileContext
+{
+	unsigned len;
+	unsigned ver;
+	unsigned __int64 dwSize;
+	unsigned type;
+	wchar_t wszFileName[MAX_PATH];
+	char unknown[30];
+	unsigned id;
+	char unknown2[64];
+} HFileContext;
+
+struct P2PB_Header
+{
+	virtual char* parseMsg(char *buf) = 0;
+	virtual char* createMsg(char *buf, const char* wlid, CMsnProto *ppro) = 0;
+	virtual bool isV2Hdr(void) = 0;
+	virtual void logHeader(CMsnProto *ppro) = 0;
+};
+
+struct P2P_Header : P2PB_Header
+{
+	unsigned          mSessionID;
+	unsigned          mID;
+	unsigned __int64  mOffset;
+	unsigned __int64  mTotalSize;
+	unsigned          mPacketLen;
+	unsigned          mFlags;
+	unsigned          mAckSessionID;
+	unsigned          mAckUniqueID;
+	unsigned __int64  mAckDataSize;
+
+	P2P_Header() { memset(&mSessionID, 0, 48); }
+	P2P_Header(char *buf) { parseMsg(buf); }
+
+	char* parseMsg(char *buf)  { memcpy(&mSessionID, buf, 48); return buf + 48; }
+	char* createMsg(char *buf, const char* wlid, CMsnProto *ppro);
+	bool isV2Hdr(void) { return false; }
+	void logHeader(CMsnProto *ppro);
+} ;
+
+struct P2PV2_Header : P2PB_Header
+{
+	unsigned          mSessionID;
+	unsigned          mID;
+	const char*       mCap;
+	unsigned __int64  mRemSize;
+	unsigned          mPacketLen;
+	unsigned          mPacketNum;
+	unsigned          mAckUniqueID;
+	unsigned char     mOpCode;
+	unsigned char     mTFCode;
+
+	P2PV2_Header() { memset(&mSessionID, 0, ((char*)&mTFCode - (char*)&mSessionID) + sizeof(mTFCode)); }
+	P2PV2_Header(char *buf) { parseMsg(buf); }
+
+	char* parseMsg(char *buf);
+	char* createMsg(char *buf, const char* wlid, CMsnProto *ppro);
+	bool isV2Hdr(void) { return true; }
+	void logHeader(CMsnProto *ppro);
+};
+
+#pragma pack()
+
+bool p2p_IsDlFileOk(filetransfer* ft);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	Thread handling functions and datatypes
@@ -402,36 +472,9 @@ struct filetransfer
 #define MSG_REQUIRE_ACK      2
 #define MSG_RTL              4
 #define MSG_OFFLINE          8
-#define MSG_CONTACT			16
-#define MSG_NUDGE			32
 
 struct CMsnProto;
 typedef void (__cdecl CMsnProto::*MsnThreadFunc)(void*);
-
-/* Groupchat threadlist entry. As there is no more SB in MSNP21+, 
- * this is no longer in ThreadData and there are no more new 
- * Threads, but for code compatibility, we still have ThreadData
- * as a "main connection"
- */
-struct GCUserItem
-{
-	char	WLID[MSN_MAX_EMAIL_LEN];
-	wchar_t   role[8];
-	BYTE    btag;
-};
-
-struct GCThreadData
-{
-   GCThreadData();
-   ~GCThreadData();
-
-   LIST<GCUserItem> mJoinedContacts;
-   GCUserItem*   mCreator;
-   GCUserItem*   mMe;
-   wchar_t         mChatID[MSN_MAX_EMAIL_LEN];
-   int			 netId;			// from mChatID
-   char			 szEmail[MSN_MAX_EMAIL_LEN];	// frim mChatID
-};
 
 struct ThreadData
 {
@@ -442,16 +485,15 @@ struct ThreadData
    STRLIST       mJoinedIdentContactsWLID;
    char*         mInitialContactWLID;
 
-   TInfoType     mType;              // thread type
-   MsnThreadFunc mFunc;              // thread entry point
-   char          mServer[80];        // server name
-   char          mState[128];	       // state on XFR
+   TInfoType     mType;            // thread type
+   MsnThreadFunc mFunc;            // thread entry point
+   char          mServer[80];      // server name
 
-	HNETLIBCONN   s;                  // NetLib connection for the thread
+   HANDLE        s;               // NetLib connection for the thread
    HANDLE        mIncomingBoundPort; // Netlib listen for the thread
    HANDLE        hWaitEvent;
    WORD          mIncomingPort;
-   wchar_t       mChatID[10];
+   TCHAR         mChatID[10];
    bool          mIsMainThread;
    clock_t       mWaitPeriod;
 
@@ -460,6 +502,7 @@ struct ThreadData
    //----| for gateways |----------------------------------------------------------------
    char          mSessionID[50]; // Gateway session ID
    char          mGatewayIP[80]; // Gateway IP address
+   int           mGatewayTimeout;
    bool          sessionClosed;
    bool          termPending;
    bool          gatewayType;
@@ -477,11 +520,10 @@ struct ThreadData
 
    //----| internal data buffer |--------------------------------------------------------
    int           mBytesInData;     // bytes available in data buffer
-   char         *mData;            // data buffer for connection
-   size_t        mDataSize;
+   char          mData[8192];      // data buffer for connection
 
    //----| methods |---------------------------------------------------------------------
-	void          applyGatewayData(HNETLIBCONN hConn, bool isPoll);
+   void          applyGatewayData(HANDLE hConn, bool isPoll);
    void          getGatewayUrl(char* dest, int destlen, bool isPoll);
    void          processSessionData(const char* xMsgr, const char* xHost);
    void          startThread(MsnThreadFunc , CMsnProto *prt);
@@ -493,13 +535,16 @@ struct ThreadData
    bool          isTimeout(void);
 
    void          sendTerminate(void);
+   void          sendCaps(void);
    int           sendMessage(int msgType, const char* email, int netId, const char* msg, int parFlags);
    int           sendRawMessage(int msgType, const char* data, int datLen);
    int           sendPacket(const char* cmd, const char* fmt, ...);
-   int			  sendPacketPayload(const char* cmd, const char *param, const char* fmt, ...);
 
+   int           contactJoined(const char* email);
+   int           contactLeft(const char* email);
    MCONTACT      getContactHandle(void);
 };
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // MSN P2P session support
@@ -522,6 +567,11 @@ struct ThreadData
 #define MSN_TYPEID_BKGNDIMG			5
 #define MSN_TYPEID_WINK				8
 
+
+
+inline bool IsChatHandle(MCONTACT hContact) { return (INT_PTR)hContact < 0; }
+
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //	Message queue
 
@@ -543,6 +593,7 @@ struct MsgQueueEntry
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	Avatars' queue
+
 struct AvatarQueueEntry
 {
 	MCONTACT hContact;
@@ -557,49 +608,6 @@ struct AvatarQueueEntry
 	{	mir_free(pszUrl);
 	}
 };
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//	OAuth Token
-class GenericToken {
-public:
-	GenericToken(const char *pszTokenName);
-	~GenericToken();
-
-	__forceinline void Init(CMsnProto* proto) { m_proto = proto; }
-	bool Load();
-	void Save();
-	virtual bool Refresh(bool = false) { return false; }
-	bool Expired(time_t t = time(0));
-	void Clear();
-	const char *Token();
-	__forceinline operator char*() const { return m_pszToken; }
-	void SetToken(const char *pszToken, time_t tExpires);
-
-protected:
-	const char *m_pszTokenName;
-	char *m_pszToken;
-	time_t m_tExpires;
-	CMsnProto*    m_proto;
-};
-
-class OAuthToken : public GenericToken {
-public:
-	OAuthToken(const char *pszTokenName, const char *pszService, bool bPreprendT = false);
-
-	virtual bool Refresh(bool bForce = false) override;
-
-private:
-	const char *m_pszService;
-	bool m_bPreprendT;
-};
-
-class SkypeToken : public GenericToken {
-public:
-	SkypeToken(const char *pszTokenName);
-	virtual bool Refresh(bool bForce = false) override;
-	const char *XSkypetoken();
-};
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //	User lists
@@ -620,14 +628,10 @@ struct MsnPlace
 	char *id;
 	unsigned cap1;
 	unsigned cap2;
-	unsigned client;
-	char szClientVer[32];
 	unsigned p2pMsgId;
 	unsigned short p2pPktNum;
 
-	~MsnPlace() {
-		mir_free(id);
-	}
+	~MsnPlace() { mir_free(id); }
 };
 
 struct MsnContact
@@ -644,16 +648,8 @@ struct MsnContact
 
 	OBJLIST<MsnPlace> places;
 
-	MsnContact() : email(nullptr), invite(nullptr), nick(nullptr),
-		hContact(0), list(0), netId(0), p2pMsgId(0),
-		cap1(0), cap2(0), places(1, CompareId) {
-	}
-
-	~MsnContact() {
-		mir_free(email);
-		mir_free(nick);
-		mir_free(invite);
-	}
+	MsnContact() : places(1, CompareId) {}
+	~MsnContact() { mir_free(email); mir_free(nick); mir_free(invite); }
 };
 
 #define cap_OnlineViaMobile                 0x00000001
@@ -714,35 +710,18 @@ struct MsnContact
 #define capex_SupportsP4Activity            0x40000000
 #define capex_SupportsChats                 0x80000000
 
-#define capexex_SupportsMissedConversations	0x00000001
-#define capexex_SupportsShortCircuit		0x00000020
-
-#define NETID_UNKNOWN	0
-#define NETID_MSN		1
-#define NETID_LCS		2
-#define NETID_ALIAS		3
-#define NETID_MOB		4
-#define NETID_DOMAIN	5
-#define NETID_SINK		6
-#define NETID_CONTACT	7
-#define NETID_SKYPE		8
-#define NETID_CIRCLE	9
-#define NETID_TMPCIRCLE	10
-#define NETID_CID		11
-#define NETID_APPID		12
-#define NETID_CONNECT	13
-#define NETID_REMOTE	14
-#define NETID_SMTP		16
-#define NETID_LVIDSINK	17
-#define NETID_MULTICAST	18
-#define NETID_THREAD	19
-#define NETID_1TO1TEXT	21
-#define NETID_GROUPTEXT	22
-#define NETID_BOT		28
-#define NETID_YAHOO		32
-#define NETID_PUBSUBTPC	33
-#define NETID_PUBSUBSUB	34
-#define NETID_WNSSID	35
+#define NETID_UNKNOWN	0x0000
+#define NETID_MSN		0x0001
+#define NETID_LCS		0x0002
+#define NETID_MOB		0x0004
+#define NETID_MOBNET	0x0008
+#define NETID_CIRCLE	0x0009
+#define NETID_TMPCIRCLE	0x000A
+#define NETID_CID		0x000B
+#define NETID_CONNECT	0x000D
+#define NETID_REMOTE	0x000E
+#define NETID_SMTP		0x0010
+#define NETID_YAHOO		0x0020
 
 #define	LIST_FL         0x0001
 #define	LIST_AL		    0x0002
@@ -754,7 +733,9 @@ struct MsnContact
 #define	LIST_REMOVE     0x0100
 #define	LIST_REMOVENH   0x0300
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //	MSN plugin options
+
 typedef struct _tag_MYOPTIONS
 {
 	bool		EnableSounds;
@@ -764,13 +745,14 @@ typedef struct _tag_MYOPTIONS
 	bool		ManageServer;
 
 	char		szEmail[MSN_MAX_EMAIL_LEN];
-	int			netId;
 	char		szMachineGuid[MSN_GUID_LEN];
 	char		szMachineGuidP2P[MSN_GUID_LEN];
 }
 MYOPTIONS;
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //	Windows error class
+
 struct TWinErrorCode
 {
 	WINAPI	TWinErrorCode();
@@ -787,15 +769,14 @@ struct TWinErrorCode
 
 #define MSN_NUM_MODES 9
 
-const char msnProtChallenge[] = "YMM8C_H7KCQ2S_KL";
-const char msnProductID[] = "PROD0090YUAUV{2B";
-const char msnAppID[] = "F6D2794D-501F-443A-ADBE-8F1490FF30FD";
-const int  msnP24Ver = 2;
-const char msnStoreAppId[] = "Skype";
-const char msnProductVer[] = "0/6.16.0.105/259/";
-const char msnProtID[] = "MSNP24";
+const char msnProtChallenge[] = "C1BX{V4W}Q3*10SM";
+const char msnProductID[] = "PROD0120PW!CCV9@";
+const char msnAppID[] = "AAD9B99B-58E6-4F23-B975-D9EC1F9EC24A";
+const char msnStoreAppId[] = "Messenger Client 9.0";
+const char msnProductVer[] = "14.0.8117.0416";
+const char msnProtID[] = "MSNP18";
 
-extern bool g_bTerminated;
+extern HINSTANCE hInst;
 
 ///////////////////////////////////////////////////////////////////////////////
 // UTF8 encode helper
@@ -860,6 +841,8 @@ typedef struct _tag_MyConnectionType
 	const IN_ADDR GetMyExtIP(void) { return *((PIN_ADDR)&extIP); }
 	const char* GetMyExtIPStr(void) { return inet_ntoa(GetMyExtIP()); }
 	const char* GetMyUdpConStr(void) { return conStr[udpConType]; }
+	void SetUdpCon(const char* str);
+	void CalculateWeight(void);
 } MyConnectionType;
 
 struct chunkedmsg
@@ -887,16 +870,15 @@ INT_PTR CALLBACK DlgDeleteContactUI(HWND hwndDlg, UINT msg, WPARAM wParam, LPARA
 
 struct InviteChatParam
 {
-	wchar_t* id;
+	TCHAR* id;
 	MCONTACT hContact;
 	CMsnProto* ppro;
 
-	InviteChatParam(const wchar_t* id, MCONTACT hContact, CMsnProto* ppro)
-		: id(mir_wstrdup(id)), hContact(hContact), ppro(ppro) {}
+	InviteChatParam(const TCHAR* id, MCONTACT hContact, CMsnProto* ppro)
+		: id(mir_tstrdup(id)), hContact(hContact), ppro(ppro) {}
 
-	~InviteChatParam() {
-		mir_free(id);
-	}
+	~InviteChatParam()
+	{ mir_free(id); }
 };
 
 INT_PTR CALLBACK DlgInviteToChat(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);

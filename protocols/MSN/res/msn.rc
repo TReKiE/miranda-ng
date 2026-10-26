@@ -25,7 +25,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 //
 
 IDD_OPT_MSN DIALOGEX 0, 0, 304, 176
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
@@ -34,18 +34,18 @@ BEGIN
     EDITTEXT        IDC_HANDLE,72,18,100,12,ES_AUTOHSCROLL
     RTEXT           "Password:",IDC_STATIC,16,36,52,8
     EDITTEXT        IDC_PASSWORD,72,34,100,12,ES_PASSWORD | ES_AUTOHSCROLL
-    RTEXT           "Nickname:",IDC_STATIC,16,52,52,8,NOT WS_VISIBLE
-    EDITTEXT        IDC_HANDLE2,72,50,100,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    RTEXT           "Nickname:",IDC_STATIC,16,52,52,8
+    EDITTEXT        IDC_HANDLE2,72,50,100,12,ES_AUTOHSCROLL
     CONTROL         "Create a new Windows Live account",IDC_NEWMSNACCOUNTLINK,
                     "Hyperlink",WS_TABSTOP,21,68,208,8
     GROUPBOX        "Expert",IDC_STATIC,4,84,298,88,WS_GROUP
     CONTROL         "Send message font color/size info inside messages",IDC_SENDFONTINFO,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,95,280,10
     CONTROL         "Disable all contacts not included into my contact list",IDC_DISABLE_ANOTHER_CONTACTS,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,12,106,280,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,106,280,10
     CONTROL         "Manage server groups",IDC_MANAGEGROUPS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,116,280,10
     CONTROL         "Allow people on my contact list send messages to mobile device",IDC_MOBILESEND,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,12,126,280,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,126,280,10
     CONTROL         "Run the following application when new Hotmail arrives",IDC_RUN_APP_ON_HOTMAIL,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,137,280,10
     EDITTEXT        IDC_MAILER_APP,22,153,237,12,ES_AUTOHSCROLL
@@ -53,17 +53,17 @@ BEGIN
 END
 
 IDD_OPT_MSN_CONN DIALOGEX 0, 0, 304, 127
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Connection settings",IDC_STATIC,4,3,298,64
     RTEXT           "Direct:",IDC_STATIC,10,18,52,8
     EDITTEXT        IDC_DIRECTSERVER,68,16,135,12,ES_AUTOHSCROLL
-    LTEXT           " 443",IDC_STATIC,209,16,28,12,SS_SUNKEN
+    LTEXT           " 1863",IDC_STATIC,209,16,28,12,SS_SUNKEN
     RTEXT           "Gateway:",IDC_STATIC,10,32,52,8
     EDITTEXT        IDC_GATEWAYSERVER,68,30,135,12,ES_AUTOHSCROLL
-    CONTROL         " 443",IDC_STATIC,"Static",SS_SIMPLE | SS_SUNKEN | WS_GROUP,209,30,28,12
+    CONTROL         " 80",IDC_STATIC,"Static",SS_SIMPLE | SS_SUNKEN | WS_GROUP,209,30,28,12
     PUSHBUTTON      "Reset",IDC_RESETSERVER,244,16,48,12
     CONTROL         "Notify me when a message delivery has failed",IDC_SLOWSEND,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,49,285,8
@@ -94,16 +94,14 @@ BEGIN
 END
 
 IDD_OPT_NOTIFY DIALOGEX 0, 0, 289, 126
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Hotmail",IDC_STATIC,5,7,262,60
-    CONTROL         "Enable Popup notifications",IDC_DISABLEHOTMAILPOPUP,
+    CONTROL         "Disable Popup notifications",IDC_DISABLEHOTMAILPOPUP,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,18,245,10
-    CONTROL         "Enable Contact List notifications",IDC_DISABLEHOTMAILCL,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,245,10
-    CONTROL         "Enable Tray notifications",IDC_DISABLEHOTMAILTRAY,
+    CONTROL         "Disable Tray notifications",IDC_DISABLEHOTMAILTRAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,41,245,10
     CONTROL         "Ignore new messages not in Inbox folder",IDC_DISABLEHOTJUNK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,52,245,10
@@ -114,6 +112,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,92,245,10
     CONTROL         "Enable 'Contact left channel' popup",IDC_NOTIFY_ENDSESSION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,105,245,8
+    CONTROL         "Disable Contact List notifications",IDC_DISABLEHOTMAILCL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,245,10
 END
 
 IDD_SETNICKNAME DIALOGEX 0, 0, 187, 42
@@ -128,7 +128,6 @@ END
 
 IDD_USEROPTS DIALOGEX 0, 0, 224, 132
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_CCARD_TAB1,"SysTabControl32",0x0,0,0,223,117

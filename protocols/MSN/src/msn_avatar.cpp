@@ -1,7 +1,7 @@
 /*
 Plugin for Miranda NG for communicating with users of the MSN Messenger protocol.
 
-Copyright (C) 2012-20 Miranda NG team
+Copyright (c) 2012-14 Miranda NG Team
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stdafx.h"
+#include "msn_global.h"
 #include "msn_proto.h"
 
 void CMsnProto::AvatarQueue_Init()
 {
-	hevAvatarQueue = ::CreateSemaphore(nullptr, 0, 255, nullptr);
+	hevAvatarQueue = ::CreateEvent(NULL, FALSE, FALSE, NULL);
 
-	ForkThread(&CMsnProto::MSN_AvatarsThread, nullptr);
+	ForkThread(&CMsnProto::MSN_AvatarsThread, 0);
 }
 
 void CMsnProto::AvatarQueue_Uninit()
@@ -34,17 +34,17 @@ void CMsnProto::AvatarQueue_Uninit()
 
 void CMsnProto::pushAvatarRequest(MCONTACT hContact, LPCSTR pszUrl)
 {
-	ProtoBroadcastAck(hContact, ACKTYPE_AVATAR, ACKRESULT_STATUS, nullptr);
+	ProtoBroadcastAck(hContact, ACKTYPE_AVATAR, ACKRESULT_STATUS, NULL, 0);
 
-	if (pszUrl != nullptr && *pszUrl != 0) {
+	if (pszUrl != NULL && *pszUrl != 0) {
 		mir_cslock lck(csAvatarQueue);
 
-		for (auto &it : lsAvatarQueue)
-			if (it->hContact == hContact)
+		for (int i=0; i < lsAvatarQueue.getCount(); i++)
+			if (lsAvatarQueue[i]->hContact == hContact)
 				return;
 
 		lsAvatarQueue.insert(new AvatarQueueEntry(hContact, pszUrl));
-		ReleaseSemaphore(hevAvatarQueue, 1, nullptr);
+		SetEvent(hevAvatarQueue);
 	}
 }
 
@@ -61,45 +61,49 @@ bool CMsnProto::loadHttpAvatar(AvatarQueueEntry *p)
 	nlhr.headers = (NETLIBHTTPHEADER*)&nlbhHeaders;
 	nlhr.headersCount = 1;
 
-	NLHR_PTR nlhrReply(Netlib_HttpTransaction(m_hNetlibUser, &nlhr));
-	if (nlhrReply == nullptr)
+	NETLIBHTTPREQUEST *nlhrReply = (NETLIBHTTPREQUEST*)CallService(MS_NETLIB_HTTPTRANSACTION, (WPARAM)m_hNetlibUser, (LPARAM)&nlhr);
+	if (nlhrReply == NULL)
 		return false;
 
-	if (nlhrReply->resultCode != 200 || nlhrReply->dataLength == 0)
+	if (nlhrReply->resultCode != 200 || nlhrReply->dataLength == 0) {
+LBL_Error:
+		CallService(MS_NETLIB_FREEHTTPREQUESTSTRUCT, 0, (LPARAM)nlhrReply);
 		return false;
+	}
 
-	const wchar_t *szExt;
+	const TCHAR *szExt;
 	int fmt = ProtoGetBufferFormat(nlhrReply->pData, &szExt);
 	if (fmt == PA_FORMAT_UNKNOWN)
-		return false;
+		goto LBL_Error;
 
-	PROTO_AVATAR_INFORMATION ai = { 0 };
-	ai.format = fmt;
-	ai.hContact = p->hContact;
-	MSN_GetAvatarFileName(ai.hContact, ai.filename, _countof(ai.filename), szExt);
-	_wremove(ai.filename);
+	PROTO_AVATAR_INFORMATIONT AI = { sizeof(AI) };
+	AI.format = fmt;
+	AI.hContact = p->hContact;
+	MSN_GetAvatarFileName(AI.hContact, AI.filename, SIZEOF(AI.filename), szExt);
+	_tremove(AI.filename);
 
-	int fileId = _wopen(ai.filename, _O_CREAT | _O_TRUNC | _O_WRONLY | O_BINARY, _S_IREAD | _S_IWRITE);
+	int fileId = _topen(AI.filename, _O_CREAT | _O_TRUNC | _O_WRONLY | O_BINARY, _S_IREAD | _S_IWRITE);
 	if (fileId == -1)
-		return false;
+		goto LBL_Error;
 
 	_write(fileId, nlhrReply->pData, (unsigned)nlhrReply->dataLength);
 	_close(fileId);
 
-	ProtoBroadcastAck(p->hContact, ACKTYPE_AVATAR, ACKRESULT_SUCCESS, &ai);
+	ProtoBroadcastAck(p->hContact, ACKTYPE_AVATAR, ACKRESULT_SUCCESS, &AI, 0);
+	CallService(MS_NETLIB_FREEHTTPREQUESTSTRUCT, 0, (LPARAM)nlhrReply);
 	return true;
 }
 
 void __cdecl CMsnProto::MSN_AvatarsThread(void*)
 {
-	while (true) {
+	while(true) {
 		if (WaitForSingleObject(hevAvatarQueue, INFINITE) != WAIT_OBJECT_0)
 			break;
 
-		if (g_bTerminated)
+		if ( Miranda_Terminated())
 			break;
 
-		AvatarQueueEntry *p = nullptr;
+		AvatarQueueEntry *p = NULL;
 		{
 			mir_cslock lck(csAvatarQueue);
 			if (lsAvatarQueue.getCount() > 0) {
@@ -108,16 +112,11 @@ void __cdecl CMsnProto::MSN_AvatarsThread(void*)
 			}
 		}
 
-		if (p == nullptr)
+		if (p == NULL)
 			continue;
 
-		if (!loadHttpAvatar(p))
-			ProtoBroadcastAck(p->hContact, ACKTYPE_AVATAR, ACKRESULT_FAILED, nullptr);
+		if ( !loadHttpAvatar(p))
+			ProtoBroadcastAck(p->hContact, ACKTYPE_AVATAR, ACKRESULT_FAILED, 0, 0);
 		delete p;
 	}
-
-	mir_cslock lck(csAvatarQueue);
-	for (auto &it : lsAvatarQueue)
-		delete it;
-	lsAvatarQueue.destroy();
 }
