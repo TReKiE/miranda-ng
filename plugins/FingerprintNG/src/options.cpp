@@ -36,6 +36,7 @@ static settings[] =
 	{ IDC_GROUP_GG, TRUE, "GroupGG" },
 	{ IDC_GROUP_IRC, TRUE, "GroupIRC" },
 	{ IDC_GROUP_JABBER, TRUE, "GroupJabber" },
+	{ IDC_GROUP_MSN, TRUE, "GroupMSN" },
 	{ IDC_GROUP_RSS, TRUE, "GroupRSS" },
 	{ IDC_GROUP_WEATHER, TRUE, "GroupWeather" },
 	{ IDC_GROUP_VK, TRUE, "GroupVK" },

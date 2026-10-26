@@ -84,6 +84,7 @@ struct FOUNDINFO
 #define GG_CASE                  3006  // Gadu-Gadu clients
 #define IRC_CASE                 3009  // IRC clients
 #define JABBER_CASE              3010  // Jabber clients
+#define MSN_CASE                 3012  // MSN clients
 #define RSS_CASE                 3014  // RSS clients
 #define WEATHER_CASE             3016  // Weather clients
 #define VK_CASE                  3019  // VK clients

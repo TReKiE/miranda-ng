@@ -55,6 +55,7 @@ Source: "Files\Icons\Proto_Dummy.dll"; DestDir: "{app}\Icons"; Components: progr
 Source: "Files\Icons\Proto_IRC.dll"; DestDir: "{app}\Icons"; Components: protocols\irc; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Icons\Proto_Jabber.dll"; DestDir: "{app}\Icons"; Components: protocols\jabber; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Icons\Proto_MetaContacts.dll"; DestDir: "{app}\Icons"; Components: program; Flags: ignoreversion; AfterInstall: ShowPercent() 
+Source: "Files\Icons\Proto_MSN.dll"; DestDir: "{app}\Icons"; Components: protocols\msn; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Icons\xStatus_Jabber.dll"; DestDir: "{app}\Icons"; Components: protocols\jabber; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Icons\TabSRMM_icons.dll"; DestDir: "{app}\Icons"; Components: messagewin\tabsrmm; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Icons\Toolbar_icons.dll"; DestDir: "{app}\Icons"; Components: clicts\modern; Flags: ignoreversion; AfterInstall: ShowPercent() 
@@ -105,6 +106,7 @@ Source: "Files\Plugins\Dummy.dll"; DestDir: "{app}\Plugins"; Components: program
 Source: "Files\Plugins\IRC.dll"; DestDir: "{app}\Plugins"; Components: protocols\irc; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Plugins\Jabber.dll"; DestDir: "{app}\Plugins"; Components: protocols\jabber; Flags: ignoreversion; AfterInstall: ShowPercent() 
 Source: "Files\Libs\libsignal.mir"; DestDir: "{app}\Libs"; Components: protocols\jabber; Flags: ignoreversion; AfterInstall: ShowPercent() 
+Source: "Files\Plugins\MSN.dll"; DestDir: "{app}\Plugins"; Components: protocols\msn; Flags: ignoreversion; AfterInstall: ShowPercent() 
 
 ; Clists
 Source: "Files\Plugins\Clist_blind.dll"; DestDir: "{app}\Plugins"; Components: clicts\blind; Flags: ignoreversion; AfterInstall: ShowPercent() 
@@ -135,6 +137,7 @@ Name: "sounds"; Description: "{cm:Sounds}"; Types: extended custom
 Name: "protocols"; Description: "{cm:Protocols}"; Types: extended regular minimal 
 Name: "protocols\irc"; Description: "{cm:Irc}"; Types: extended regular minimal 
 Name: "protocols\jabber"; Description: "{cm:Jabber}"; Types: extended regular minimal 
+Name: "protocols\msn"; Description: "{cm:Msn}"; Types: extended regular minimal 
 Name: "clists"; Description: "{cm:Clists}"; Types: extended regular minimal custom; Flags: fixed 
 Name: "clicts\stdclist"; Description: "{cm:StdClist}"; Types: minimal; Flags: exclusive 
 Name: "clicts\blind"; Description: "{cm:BlindClist}"; Types: custom; Flags: exclusive 
@@ -200,6 +203,7 @@ en.Sounds=Sound files
 en.Protocols=Protocols
 en.Irc=IRC protocol
 en.Jabber=Jabber protocol
+en.Msn=MSN protocol
 en.Clists=Contact lists
 en.StdClist=StdClist contact list
 en.BlindClist=Contact list for blind folks
@@ -224,6 +228,7 @@ en.SoundsDescription=Sound notification support for various events.
 en.ProtocolsDescription=Various protocols for instant messaging and more.
 en.ProtocolsIRCDescription=Internet Relay Chat (IRC) protocol support for Miranda NG.
 en.ProtocolsJabberDescription=Open-standard communications protocol (XMPP) for message-oriented middleware based on XML.
+en.ProtocolsMSNDescription=Microsoft Network (MSN) protocol support for Miranda NG.
 en.ClistsDescription=Contact list plugins.
 en.StdClistDescription=Basic contact list core module.
 en.BlindClistDescription=This is a contact list for blind folks. It uses a list control to show all contacts, so screen readers can "read" the clist to the user.
@@ -266,6 +271,7 @@ ru.Sounds=Звуки
 ru.Protocols=Протоколы
 ru.Irc=Протокол IRC
 ru.Jabber=Протокол Jabber
+ru.Msn=Протокол MSN
 ru.Clists=Списки контактов
 ru.StdClist=Список контактов StdClist
 ru.BlindClist=Список контактов для слабовидящих
@@ -290,6 +296,7 @@ ru.SoundsDescription=Звуковые эффекты, проигрываемые
 ru.ProtocolsDescription=Различные протоколы для обмена сообщениями и не только.
 ru.ProtocolsIRCDescription=Поддержка протокола Internet Relay Chat (IRC) в Miranda NG.
 ru.ProtocolsJabberDescription=Поддержка протокола Jabber (XMPP) в Miranda NG. Протокол основан на открытых стандартах, базирующихся на XML.
+ru.ProtocolsMSNDescription=Поддержка протокола Microsoft Network (MSN) в Miranda NG.
 ru.ClistsDescription=Плагины списков контактов.
 ru.StdClistDescription=Список контактов, являющийся модулем ядра, обеспечивает базовый функционал.
 ru.BlindClistDescription=Список контактов для слабовидящих. Вспомогательные программы для людей с проблемами зрения могут легко "считать" информацию пользователю.
@@ -332,6 +339,7 @@ cz.Sounds=Zvukové soubory
 cz.protocols=Protokoly
 cz.Irc=IRC protokol
 cz.Jabber=Jabber protokol
+cz.Msn=MSN protokol
 cz.Clists=Seznamy kontaktů
 cz.StdClist=StdClist
 cz.BlindClist=Clist_blind (pro nevidomé)
@@ -356,6 +364,7 @@ cz.SoundsDescription=Podpora zvukových efektů pro různé události.
 cz.protocolsDescription=Různé protokoly pro rychlou komunikaci a další funkce.
 cz.protocolsIRCDescription=Internet Relay Chat (IRC) protokol pro Mirandu NG.
 cz.protocolsJabberDescription=Otevřený komunikační protokol Jabber (XMPP) pro Mirandu NG.
+cz.protocolsMSNDescription=Microsoft Network (MSN) protokol pro Mirandu NG.
 cz.ClistsDescription=Doplňky pro seznamy kontaktů.
 cz.StdClistDescription=Základní integrovaný modul pro seznam kontaktů.
 cz.BlindClistDescription=Seznam kontaktů pro nevidomé uživatele. Pro zobrazení kontaktů využívá jednoduchý seznam, který může být jednoduše přečten.
@@ -398,6 +407,7 @@ de.Sounds=Klangdateien
 de.Protocols=Protokolle
 de.Irc=IRC-Protokoll
 de.Jabber=Jabber-Protokoll
+de.Msn=MSN-Protokoll
 de.Clists=Kontaktlisten
 de.StdClist=Klassische Kontaktliste
 de.BlindClist=Kontaktliste für Blinde
@@ -422,6 +432,7 @@ de.SoundsDescription=Klangbenachrichtigungen für eine Vielzahl an Ereignissen.
 de.ProtocolsDescription=Verschiedene Protokolle für Sofortnachrichten und mehr.
 de.ProtocolsIRCDescription=Internet-Relay-Chat- (IRC-)Protokollunterstützung für Miranda NG.
 de.ProtocolsJabberDescription=Unterstützung des Extensible Messaging and Presence Protocols (XMPP) für Miranda NG.
+de.ProtocolsMSNDescription=Microsoft-Network- (MSN)-Protokollunterstützung für Miranda NG.
 de.ClistsDescription=Kontaktlistenplugins.
 de.StdClistDescription=Grundlegendes Kontaktlisten-Kernmodul.
 de.BlindClistDescription=Dies ist eine Kontaktliste für Blinde. Sie benutzt eine Liste, um alle Kontakte anzuzeigen, so dass Bildschirmleser die Kontaktliste dem Benutzer "vorlesen" können.
@@ -464,6 +475,7 @@ pl.Sounds=Dźwięki
 pl.Protocols=Protokoły
 pl.Irc=IRC
 pl.Jabber=Jabber
+pl.Msn=MSN
 pl.Clists=Lista kontaktów
 pl.StdClist=Lista klasyczna (StdClist)
 pl.BlindClist=Dla niewidomych (Blind)
@@ -488,6 +500,7 @@ pl.SoundsDescription=Paczka predefiniowanych dźwięków dla różnych zdarzeń.
 pl.ProtocolsDescription=Wtyczki zapewniające wspracie dla różnych protokołów.
 pl.ProtocolsIRCDescription=Zapewnia obsługę protokołu Internet Relay Chat (IRC).
 pl.ProtocolsJabberDescription=Zapewnia obsługę protokołu Jabber/XMPP.
+pl.ProtocolsMSNDescription=Zapewnia obsługę protokołu Microsoft Network (MSN).
 pl.ClistsDescription=Wtyczki listy kontaktów.
 pl.StdClistDescription=Podstawowy moduł listy kontaktów zawarty w rdzeniu.
 pl.BlindClistDescription=Jest to lista kontaktów dla ludzi niewidomych. Używa kontrolki listy, aby pokazać wszystkie kontakty, dzięki temu czytnik ekranu może "czytać" listę użtkownikowi.
@@ -556,7 +569,7 @@ const
   DRIVE_RAMDISK = 6;     // The drive is a RAM disk.
 
   // don't forget to increment it after adding new components!
-  COMPONENTS_COUNT = 16; // Index of the first language
+  COMPONENTS_COUNT = 17; // Index of the first language
 
 // Default installation check
 function IsDefault: Boolean;
@@ -766,6 +779,7 @@ begin
     ComponentList.Add('protocols');
     ComponentList.Add('protocols\irc');
     ComponentList.Add('protocols\jabber');
+    ComponentList.Add('protocols\msn');
     ComponentList.Add('clists');
     ComponentList.Add('clists\stdclist');
     ComponentList.Add('clists\blind');
@@ -850,6 +864,7 @@ begin
     ExpandConstant('{cm:ProtocolsDescription}') + ';' +
     ExpandConstant('{cm:ProtocolsIRCDescription}') + ';' +
     ExpandConstant('{cm:ProtocolsJabberDescription}') + ';' +
+    ExpandConstant('{cm:ProtocolsMSNDescription}') + ';' +
     ExpandConstant('{cm:ClistsDescription}') + ';' +
     ExpandConstant('{cm:StdClistDescription}') + ';' +
     ExpandConstant('{cm:BlindClistDescription}') + ';' +

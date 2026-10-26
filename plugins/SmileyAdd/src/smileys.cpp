@@ -803,6 +803,8 @@ void SmileyCategoryListType::AddAccountAsCategory(PROTOACCOUNT *acc, const CMStr
 		const char *packnam = acc->szProtoName;
 		if (mir_strcmp(packnam, "JABBER") == 0)
 			packnam = "JGMail";
+			else if (strstr(packnam, "SIP") != nullptr)
+				packnam = "MSN";
 
 		wchar_t path[MAX_PATH];
 		mir_snwprintf(path, L"%s\\Smileys\\nova\\%S.msl", g_plugin.wszDefaultPath, packnam);
@@ -825,6 +827,8 @@ void SmileyCategoryListType::AddProtoAsCategory(char *acc, const CMStringW &defa
 	const char *packnam = acc;
 	if (mir_strcmp(packnam, "JABBER") == 0)
 		packnam = "JGMail";
+	else if (strstr(packnam, "SIP") != nullptr)
+		packnam = "MSN";
 
 	// assemble default path
 	CMStringW paths(FORMAT, L"%s\\Smileys\\nova\\%S.msl", g_plugin.wszDefaultPath, packnam);

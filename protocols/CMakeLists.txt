@@ -5,6 +5,7 @@
 add_subdirectory(IRCG)
 add_subdirectory(JabberG)
 #add_subdirectory(MinecraftDynmap)
+add_subdirectory(MSN)
 #add_subdirectory(Sametime)
 add_subdirectory(Max)
 add_subdirectory(Steam)

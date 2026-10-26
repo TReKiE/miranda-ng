@@ -122,15 +122,6 @@ struct CMPluginWhatsApp : public ACCPROTOPLUGIN<CDummyProto>
 }
 static g_pluginWhatsApp;
 
-struct CMPluginMsn : public ACCPROTOPLUGIN<CDummyProto>
-{
-	CMPluginMsn() : ACCPROTOPLUGIN<CDummyProto>("MSN", pluginInfoEx)
-	{
-		SetUniqueId("wlid");
-	}
-}
-static g_pluginMsn;
-
 struct CMPluginOmegle : public ACCPROTOPLUGIN<CDummyProto>
 {
 	CMPluginOmegle() : ACCPROTOPLUGIN<CDummyProto>("Omegle", pluginInfoEx)

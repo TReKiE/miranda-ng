@@ -68,6 +68,7 @@ Icons\Proto_Dummy.dll
 Icons\Proto_IRC.dll
 Icons\Proto_Jabber.dll
 Icons\Proto_MetaContacts.dll
+Icons\Proto_MSN.dll
 Icons\TabSRMM_icons.dll
 Icons\Toolbar_icons.dll
 Icons\xStatus_Jabber.dll
@@ -81,6 +82,7 @@ Plugins\Dummy.dll
 Plugins\Import.dll
 Plugins\IRC.dll
 Plugins\Jabber.dll
+Plugins\MSN.dll
 Plugins\NewEventNotify.dll
 Plugins\PluginUpdater.dll
 Plugins\StatusManager.dll

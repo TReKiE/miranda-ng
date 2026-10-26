@@ -38,7 +38,7 @@ const
  a previous call of AVATAR_SETCONTACT.
  wParam = not used
  lParam = (AnsiChar *) protcol name
- Usage: SendMessage(hwnd, AVATAR_SETPROTOCOL, 0, (LPARAM) "ICQ");
+ Usage: SendMessage(hwnd, AVATAR_SETPROTOCOL, 0, (LPARAM) "MSN");
  Only works on AVATAR_CONTROL_CLASS controls
 }
   AVATAR_SETPROTOCOL = WM_USER+2;
