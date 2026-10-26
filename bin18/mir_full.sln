@@ -32,6 +32,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IRC", "..\protocols\IRCG\IR
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Jabber", "..\protocols\JabberG\jabber.vcxproj", "{33276462-8313-4192-8306-13717ECCA60A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSN", "..\protocols\MSN\msn.vcxproj", "{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clist_nicer", "..\plugins\Clist_nicer\clist_nicer.vcxproj", "{3C42510C-A29E-4A53-899C-203BFA874E0B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cln_skinedit", "..\plugins\Cln_skinedit\skinedit.vcxproj", "{987F026D-EB1F-4013-ADA8-2406ACCDA526}"
@@ -82,7 +84,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuickMessages", "..\plugins
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuickReplies", "..\plugins\QuickReplies\quickreplies.vcxproj", "{27CA5499-B3F2-4FB6-8414-651819B0B96C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SecureIM", "..\plugins\SecureIM\secureim_18.vcxproj", "{4ADADECA-99D7-410D-8127-CB27210DCC6A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SecureIM", "..\plugins\SecureIM\secureim_16.vcxproj", "{4ADADECA-99D7-410D-8127-CB27210DCC6A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SeenPlugin", "..\plugins\SeenPlugin\seenplugin.vcxproj", "{EFD45F48-63D5-48AE-96CD-8ADB3545A4EE}"
 EndProject
@@ -136,21 +138,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CyrTranslit", "..\plugins\C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clist_modern", "..\plugins\Clist_modern\clist_modern.vcxproj", "{D9057E63-AAAA-4FE7-800A-20C02F4761F3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EkHtml", "..\plugins\MirOTR\ekhtml\ekhtml_18.vcxproj", "{2C050CAF-D8AA-468A-B1A7-89F3BE99D3C8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EkHtml", "..\plugins\MirOTR\ekhtml\ekhtml_16.vcxproj", "{2C050CAF-D8AA-468A-B1A7-89F3BE99D3C8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Libgcrypt", "..\plugins\MirOTR\Libgcrypt\Libgcrypt_18.vcxproj", "{40FE7861-E54E-4DA9-BE4D-A5178014E477}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Libgcrypt", "..\plugins\MirOTR\Libgcrypt\Libgcrypt_16.vcxproj", "{40FE7861-E54E-4DA9-BE4D-A5178014E477}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libotr", "..\plugins\MirOTR\libotr\libotr_18.vcxproj", "{1423FC8F-AA52-4562-8275-4BF0838CA378}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libotr", "..\plugins\MirOTR\libotr\libotr_16.vcxproj", "{1423FC8F-AA52-4562-8275-4BF0838CA378}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirOTR", "..\plugins\MirOTR\MirOTR_18.vcxproj", "{53F841E8-284F-4545-9176-B131896E43F8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirOTR", "..\plugins\MirOTR\MirOTR_16.vcxproj", "{53F841E8-284F-4545-9176-B131896E43F8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NewEventNotify", "..\plugins\NewEventNotify\neweventnotify.vcxproj", "{2E0A2793-94C3-82E7-2AB0-FD421816CFBF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WhoUsesMyFiles", "..\plugins\WhoUsesMyFiles\wumf.vcxproj", "{F29CCB9B-79CF-4341-AA05-3626A036D3E3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryptoPP", "..\plugins\CryptoPP\cryptopp_18.vcxproj", "{4AC1E062-0236-4E49-AA04-F732043D2DCF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryptoPP", "..\plugins\CryptoPP\cryptopp_16.vcxproj", "{4AC1E062-0236-4E49-AA04-F732043D2DCF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cryptlib", "..\plugins\CryptoPP\crypto\cryptlib_18.vcxproj", "{290C5ED4-71A7-4040-AD26-4820CF7A9E60}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cryptlib", "..\plugins\CryptoPP\crypto\cryptlib_16.vcxproj", "{290C5ED4-71A7-4040-AD26-4820CF7A9E60}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StdUserInfo", "..\src\core\stduserinfo\stduserinfo.vcxproj", "{1C856B14-54CD-4D07-B18B-5F7DB073AB51}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -263,7 +265,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clist_blind", "..\plugins\C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StartPosition", "..\plugins\StartPosition\StartPosition.vcxproj", "{046C5F80-ABE5-488F-BFC8-B024D4AACC8C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HTTPServer", "..\plugins\HTTPServer\HTTPServer_18.vcxproj", "{F7A70398-AFA0-4A58-B645-85268F9517DE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HTTPServer", "..\plugins\HTTPServer\HTTPServer_16.vcxproj", "{F7A70398-AFA0-4A58-B645-85268F9517DE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pu_stub", "..\plugins\PluginUpdater\pu_stub\pu_stub.vcxproj", "{121D2EA6-9D3C-43F6-AC5C-44BDBF93E3E0}"
 EndProject
@@ -289,7 +291,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "New_GPG", "..\plugins\New_G
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LotusNotify", "..\protocols\LotusNotify\LotusNotify.vcxproj", "{0E046380-14CA-4C23-A807-8C678519A605}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirFox", "..\plugins\MirFox\MirFoxNG_18.vcxproj", "{3E9DA555-4C7B-463C-AD5C-214073DE29D6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirFox", "..\plugins\MirFox\MirFoxNG_16.vcxproj", "{3E9DA555-4C7B-463C-AD5C-214073DE29D6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConnectionNotify", "..\protocols\ConnectionNotify\ConnectionNotify.vcxproj", "{3C83B0AB-9739-41C1-A127-ED7DB9551F76}"
 EndProject
@@ -315,7 +317,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HistoryStats", "..\plugins\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sametime", "..\protocols\Sametime\sametime.vcxproj", "{BE22A21F-73B7-453F-86A0-B867F0056490}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib", "..\protocols\Sametime\src\glib\glib_18.vcxproj", "{12BCA020-EABF-429E-876A-A476BC9C10C0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib", "..\protocols\Sametime\src\glib\glib_16.vcxproj", "{12BCA020-EABF-429E-876A-A476BC9C10C0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GmailNotifier", "..\protocols\GmailNotifier\GmailNotifier.vcxproj", "{EDAAD28B-505B-4969-A8BB-97EAE818DEEA}"
 EndProject
@@ -439,6 +441,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeltaChat", "..\protocols\D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibreView", "..\protocols\LibreView\LibreView.vcxproj", "{AEFE659D-F4AE-456E-8E6F-9E47449E6D12}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max", "..\protocols\Max\Max.vcxproj", "{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -551,6 +555,14 @@ Global
 		{33276462-8313-4192-8306-13717ECCA60A}.Release|Win32.Build.0 = Release|Win32
 		{33276462-8313-4192-8306-13717ECCA60A}.Release|x64.ActiveCfg = Release|x64
 		{33276462-8313-4192-8306-13717ECCA60A}.Release|x64.Build.0 = Release|x64
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Debug|Win32.Build.0 = Debug|Win32
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Debug|x64.ActiveCfg = Debug|x64
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Debug|x64.Build.0 = Debug|x64
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Release|Win32.ActiveCfg = Release|Win32
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Release|Win32.Build.0 = Release|Win32
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Release|x64.ActiveCfg = Release|x64
+		{7B0F213E-C15E-4219-8AE5-49DD3D3D553D}.Release|x64.Build.0 = Release|x64
 		{3C42510C-A29E-4A53-899C-203BFA874E0B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3C42510C-A29E-4A53-899C-203BFA874E0B}.Debug|Win32.Build.0 = Debug|Win32
 		{3C42510C-A29E-4A53-899C-203BFA874E0B}.Debug|x64.ActiveCfg = Debug|x64
@@ -1995,6 +2007,14 @@ Global
 		{AEFE659D-F4AE-456E-8E6F-9E47449E6D12}.Release|Win32.Build.0 = Release|Win32
 		{AEFE659D-F4AE-456E-8E6F-9E47449E6D12}.Release|x64.ActiveCfg = Release|x64
 		{AEFE659D-F4AE-456E-8E6F-9E47449E6D12}.Release|x64.Build.0 = Release|x64
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Debug|Win32.Build.0 = Debug|Win32
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Debug|x64.ActiveCfg = Debug|x64
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Debug|x64.Build.0 = Debug|x64
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Release|Win32.ActiveCfg = Release|Win32
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Release|Win32.Build.0 = Release|Win32
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Release|x64.ActiveCfg = Release|x64
+		{C2E7B1A4-9F3D-4E8C-B1A0-6D5E4F3A2B1C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2012,6 +2032,7 @@ Global
 		{6DA1396F-2A44-4D5C-8442-012F71006217} = {A035B524-0F2D-45D0-BCF2-3C20279C77E2}
 		{3A12F777-56A8-42EC-BD17-8F325524241E} = {A035B524-0F2D-45D0-BCF2-3C20279C77E2}
 		{33276462-8313-4192-8306-13717ECCA60A} = {A035B524-0F2D-45D0-BCF2-3C20279C77E2}
+        {7B0F213E-C15E-4219-8AE5-49DD3D3D553D} = {A035B524-0F2D-45D0-BCF2-3C20279C77E2}
 		{3C42510C-A29E-4A53-899C-203BFA874E0B} = {F9C41695-3353-4564-A154-58106829B19C}
 		{987F026D-EB1F-4013-ADA8-2406ACCDA526} = {F9C41695-3353-4564-A154-58106829B19C}
 		{DB315D7D-00BB-43B2-93A6-0430CA2B9F28} = {F9C41695-3353-4564-A154-58106829B19C}
